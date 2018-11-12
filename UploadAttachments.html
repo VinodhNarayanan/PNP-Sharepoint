@@ -1,0 +1,56 @@
+﻿<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sp-pnp-js/3.0.10/pnp.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var fileInfos = [];
+
+    $(document).ready(function() {
+        $('#exampleFormControlFile1').on('change', function() {
+            blob();
+        });
+    });
+
+
+    function uploadListAttachments() {
+        var item = $pnp.sp.web.lists.getByTitle("demopoc2").items.getById(1);
+        item.attachmentFiles.addMultiple(fileInfos).then(v => {
+            console.log(v);
+        }).catch(function(err) {
+            alert(err);
+        });
+    }
+
+
+    function blob() {
+        var input = document.getElementById("exampleFormControlFile1");
+        var fileCount = input.files.length;
+        console.log(fileCount);
+        for (var i = 0; i < fileCount; i++) {
+            var fileName = input.files[i].name;
+            console.log(fileName);
+            var file = input.files[i];
+            var reader = new FileReader();
+            reader.onload = (function(file) {
+                return function(e) {
+                    console.log(file.name);
+                    fileInfos.push({
+                        "name": file.name,
+                        "content": e.target.result
+                    });
+                    console.log(fileInfos);
+                }
+            })(file);
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        //End of for loop
+
+    }
+</script>
+
+<!-- HTML Snippet-->
+
+<div id="fileUploader">
+    <input type="file" id="exampleFormControlFile1" name="myfiles" multiple="multiple">
+    <button type="button" onclick="uploadListAttachments();">Upload</button>
+</div>
