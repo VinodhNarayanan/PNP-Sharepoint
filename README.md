@@ -50,8 +50,8 @@ Declare Global Array Variable to hold the multiple file content
 Write the Upload logic using Pnp-js
 
 function uploadListAttachments() {
-        var item = $pnp.sp.web.lists.getByTitle("demopoc2").items.getById(1);   // Get the item id 
-        //Pass the array value
+        var item = $pnp.sp.web.lists.getByTitle("demopoc2").items.getById(1); //Pass the item id
+        //Pass the array of file content
         item.attachmentFiles.addMultiple(fileInfos).then(v => {
             console.log(v);
         }).catch(function(err) {
@@ -59,6 +59,14 @@ function uploadListAttachments() {
         });
     }
     
-Note: Attachment is uploaded is only after successfull creation of list item
+HTML:
+
+<div id="fileUploader">
+    <input type="file" id="exampleFormControlFile1" name="myfiles" multiple="multiple">
+    <button type="button" onclick="uploadListAttachments();">Upload</button>
+</div>
+
+    
+Note: Attachment is uploaded  only after successfull creation of list item
 
 Sharing is caring!.....
